@@ -1,12 +1,10 @@
 'use strict';
 
-var setup = document.querySelector('.setup');
-setup.classList.remove('hidden');
-
 var WIZARD_NAMES = ['Иван Хуан', 'Себастьян', 'Мария', 'Кристоф', 'Виктор', 'Юлия', 'Люпита', 'Вашингтон'];
 var WIZARD_SURNAMES = ['да Марья', 'Верон', 'Мирабелла', 'Вальц', 'Онопко', 'Топольницкая', 'Нионго', 'Ирвинг'];
 var COAT_COLORS = ['rgb(101, 137, 164)', 'rgb(241, 43, 107)', 'rgb(146, 100, 161)', 'rgb(56, 159, 117)', 'rgb(215, 210, 55)', 'rgb(0, 0, 0)'];
 var EYES_COLORS = ['black', 'red', 'blue', 'yellow', 'green'];
+var FIREBALL_COLORS = ['#ee4830', '#30a8ee', '#5ce6c0', '#e848d5', '#e6e848'];
 var WIZARDS_AMOUNT = 4;
 
 var simiralWizardList = document.querySelector('.setup-similar-list');
@@ -52,3 +50,110 @@ simiralWizardList.appendChild(getFragment());
 
 var setupSimilar = document.querySelector('.setup-similar');
 setupSimilar.classList.remove('hidden');
+
+// объявление кнопок
+
+var ESC_KEYCODE = 27;
+var ENTER_KEYCODE = 13;
+
+// объявление элементов окна настройки персонажа
+
+var setup = document.querySelector('.setup');
+var setupOpen = document.querySelector('.setup-open');
+var setupClose = document.querySelector('.setup-close');
+var setupOpenIcon = document.querySelector('.setup-open-icon');
+var setupWizard = document.querySelector('.setup-wizard');
+var setupWizardCoatColor = setupWizard.querySelector('.wizard-coat');
+var setupWizardEyesColor = setupWizard.querySelector('.wizard-eyes');
+var setupWizardFireBallColor = document.querySelector('.setup-fireball-wrap');
+var setupUserNameInput = document.querySelector('.setup-user-name');
+var setupForm = document.querySelector('.setup-wizard-form');
+var setupSubmit = document.querySelector('.setup-submit');
+setupOpenIcon.tabIndex = 0;
+setup.tabIndex = 0;
+setupClose.tabIndex = 0;
+setupSubmit.tabIndex = 0;
+
+var openPopUp = function () {
+  setup.classList.remove('hidden');
+  document.addEventListener('keydown', popUpEscPressHandler);
+};
+var closePopUp = function () {
+  setup.classList.add('hidden');
+  document.removeEventListener('keydown', popUpEscPressHandler);
+};
+
+var popUpEscPressHandler = function (evt) {
+  if (evt.keyCode === ESC_KEYCODE) {
+    closePopUp();
+  }
+};
+
+// Открываеет окно настройки персонажа по клику на юзерпик
+
+setupOpen.addEventListener('click', function () {
+  openPopUp();
+});
+
+// Закрывает окно настройки персонажа по клику на крестик
+
+setupClose.addEventListener('click', function () {
+  closePopUp();
+});
+
+// Открывает окно настройки персонажа по нажатию enter
+
+setupOpenIcon.addEventListener('keydown', function (evt) {
+  if (evt.which === ENTER_KEYCODE) {
+    openPopUp();
+  }
+});
+
+//
+
+document.addEventListener('keydown', function (evt) {
+  if (evt.which === ESC_KEYCODE && !setup.classList.contains('hidden') && !setupUserNameInput.focused) {
+    closePopUp();
+  }
+
+  if (evt.which === ENTER_KEYCODE && !setup.classList.contains('hidden') && setupClose.focused) {
+    closePopUp();
+  }
+});
+
+// меняет цвет мантии персонажа на random
+
+var coatClickHandler = function () {
+  setupWizardCoatColor.style = 'fill: ' + getRandomElement(COAT_COLORS);
+};
+
+// меняет цвет глаз персонажа на random
+var eyesClickHandler = function () {
+  setupWizardEyesColor.style = 'fill: ' + getRandomElement(EYES_COLORS);
+};
+
+// меняет цвет фаербола на random
+var fireBallClickHandler = function () {
+  var FireBallColor = getRandomElement(FIREBALL_COLORS);
+  setupWizardFireBallColor.style = 'background: ' + FireBallColor;
+  setupWizardFireBallColor.querySelector('input[name=fireball-color]').value = FireBallColor;
+};
+
+// меняет цвет мантии персонажа на random при клике на мантию
+setupWizardCoatColor.addEventListener('click', coatClickHandler);
+// меняет цвет глаз персонажа на random при клике на глаза
+setupWizardEyesColor.addEventListener('click', eyesClickHandler);
+// меняет цвет фаербола на random при клике на фаербол
+setupWizardFireBallColor.addEventListener('click', fireBallClickHandler);
+
+// Отправляет данные формы по клику на кнопку сохранить
+setupSubmit.addEventListener('click', function () {
+  setupForm.submit();
+});
+
+// Отправляет данные формы при нажатии на enter и кнопки сохранить в фокусе
+setupSubmit.addEventListener('keydown', function (evt) {
+  if (evt.which === ENTER_KEYCODE && !setup.classList.contains('hidden') && !setupSubmit.focused) {
+    setupForm.submit();
+  }
+});
