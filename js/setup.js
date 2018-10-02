@@ -62,13 +62,13 @@ var setup = document.querySelector('.setup');
 var setupOpen = document.querySelector('.setup-open');
 var setupClose = document.querySelector('.setup-close');
 var setupOpenIcon = document.querySelector('.setup-open-icon');
-var setupWizard = document.querySelector('.setup-wizard');
+var setupWizard = setup.querySelector('.setup-wizard');
 var setupWizardCoatColor = setupWizard.querySelector('.wizard-coat');
 var setupWizardEyesColor = setupWizard.querySelector('.wizard-eyes');
-var setupWizardFireBallColor = document.querySelector('.setup-fireball-wrap');
-var setupUserNameInput = document.querySelector('.setup-user-name');
-var setupForm = document.querySelector('.setup-wizard-form');
-var setupSubmit = document.querySelector('.setup-submit');
+var setupWizardFireBallColor = setup.querySelector('.setup-fireball-wrap');
+var setupUserNameInput = setup.querySelector('.setup-user-name');
+var setupForm = setup.querySelector('.setup-wizard-form');
+var setupSubmit = setup.querySelector('.setup-submit');
 setupOpenIcon.tabIndex = 0;
 setup.tabIndex = 0;
 setupClose.tabIndex = 0;
@@ -104,19 +104,16 @@ setupClose.addEventListener('click', function () {
 // Открывает окно настройки персонажа по нажатию enter
 
 setupOpenIcon.addEventListener('keydown', function (evt) {
-  if (evt.which === ENTER_KEYCODE) {
+  if (evt.keyCode === ENTER_KEYCODE) {
     openPopUp();
   }
 });
 
-//
+// Если окно открыто и фокус находится на кнопке закрытия окна, то нажатие клавиши ENTER должно приводить к закрытию диалога
+// Когда окно настройки персонажа открыто, нажатие на клавишу ESC должно закрывать диалог .Если фокус находится на форме ввода имени, то окно закрываться не должно.
 
 document.addEventListener('keydown', function (evt) {
-  if (evt.which === ESC_KEYCODE && !setup.classList.contains('hidden') && !setupUserNameInput.focused) {
-    closePopUp();
-  }
-
-  if (evt.which === ENTER_KEYCODE && !setup.classList.contains('hidden') && setupClose.focused) {
+  if (((evt.keyCode === ESC_KEYCODE && !setupUserNameInput.focused) || (evt.keyCode === ENTER_KEYCODE && setupClose.focused)) && !setup.classList.contains('hidden')) {
     closePopUp();
   }
 });
@@ -153,7 +150,7 @@ setupSubmit.addEventListener('click', function () {
 
 // Отправляет данные формы при нажатии на enter и кнопки сохранить в фокусе
 setupSubmit.addEventListener('keydown', function (evt) {
-  if (evt.which === ENTER_KEYCODE && !setup.classList.contains('hidden') && !setupSubmit.focused) {
+  if (evt.keyCode === ENTER_KEYCODE && !setup.classList.contains('hidden') && !setupSubmit.focused) {
     setupForm.submit();
   }
 });
