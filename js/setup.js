@@ -80,8 +80,8 @@ var openPopUp = function () {
 };
 var closePopUp = function () {
   setup.classList.add('hidden');
-  setup.style.top = window.DEFAULTCOORDS.y;
-  setup.style.left = window.DEFAULTCOORDS.x;
+  setup.style.top = window.defaultCoords.y;
+  setup.style.left = window.defaultCoords.x;
   document.removeEventListener('keydown', popUpEscPressHandler);
 };
 

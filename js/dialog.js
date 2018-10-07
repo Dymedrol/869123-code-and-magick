@@ -4,16 +4,16 @@
 
 // Перетаскивание окна setup
 
-  var DEFAULTCOORDS = {
+  var defaultCoords = {
     x: '50%',
     y: '80px'
   };
 
-  window.DEFAULTCOORDS = DEFAULTCOORDS;
+  window.defaultCoords = defaultCoords;
 
-  var dialogHandler = window.setup.querySelector('.upload');
+  var setupDialog = window.setup.querySelector('.upload');
 
-  dialogHandler.addEventListener('mousedown', function (evt) {
+  setupDialog.addEventListener('mousedown', function (evt) {
 
     evt.preventDefault();
 
@@ -48,9 +48,9 @@
       if (dragged) {
         var onClickPreventDefault = function (clickEvt) {
           clickEvt.preventDefault();
-          dialogHandler.removeEventListener('click', onClickPreventDefault);
+          setupDialog.removeEventListener('click', onClickPreventDefault);
         };
-        dialogHandler.addEventListener('click', onClickPreventDefault);
+        setupDialog.addEventListener('click', onClickPreventDefault);
       }
 
       document.removeEventListener('mousemove', onMouseMove);
