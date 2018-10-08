@@ -70,6 +70,15 @@
     }
   });
 
+  //
+
+  setupForm.addEventListener('submit', function (evt) {
+    window.save(new FormData(setupForm), function () {
+      window.setup.classList.add('.hidden');
+      evt.preventDefault();
+    });
+  }, window.errorHandler);
+
   // Отправляет данные формы по клику на кнопку сохранить
   setupSubmit.addEventListener('click', function () {
     setupForm.submit();

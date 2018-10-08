@@ -4,8 +4,7 @@
 
   var setupSimilar = document.querySelector('.setup-similar');
   setupSimilar.classList.remove('hidden');
-  var WIZARD_NAMES = ['Иван Хуан', 'Себастьян', 'Мария', 'Кристоф', 'Виктор', 'Юлия', 'Люпита', 'Вашингтон'];
-  var WIZARD_SURNAMES = ['да Марья', 'Верон', 'Мирабелла', 'Вальц', 'Онопко', 'Топольницкая', 'Нионго', 'Ирвинг'];
+
   var COAT_COLORS = ['rgb(101, 137, 164)', 'rgb(241, 43, 107)', 'rgb(146, 100, 161)', 'rgb(56, 159, 117)', 'rgb(215, 210, 55)', 'rgb(0, 0, 0)'];
   var EYES_COLORS = ['black', 'red', 'blue', 'yellow', 'green'];
   var FIREBALL_COLORS = ['#ee4830', '#30a8ee', '#5ce6c0', '#e848d5', '#e6e848'];
@@ -21,17 +20,7 @@
 
   // Получает количество волшебников и создает массив с данными волшебников
 
-  var getWizards = function (amount) {
-    var wizardsArray = [];
-    for (var i = 0; i < amount; i++) {
-      wizardsArray[i] = {
-        name: window.getRandomElement(WIZARD_NAMES) + ' ' + window.getRandomElement(WIZARD_SURNAMES),
-        coatColor: window.getRandomElement(COAT_COLORS),
-        eyesColor: window.getRandomElement(EYES_COLORS)
-      };
-    }
-    return wizardsArray;
-  };
+  window.wizards = [];
 
   // создает разметку волшебника
 
@@ -43,20 +32,31 @@
     return wizardElement;
   };
 
-  var wizards = getWizards(WIZARDS_AMOUNT);
-
   // создает фрагмент со всеми волшебниками
   var getFragment = function () {
     var fragment = document.createDocumentFragment();
-    for (var i = 0; i < wizards.length; i++) {
-      fragment.appendChild(renderWizard(wizards[i]));
+    for (var i = 0; i < window.wizards.length; i++) {
+      fragment.appendChild(renderWizard(window.wizards[i]));
     }
     return fragment;
   };
 
-  // Вставляет фрагмент с волшебниками в разметку
+  //
 
-  simiralWizardList.appendChild(getFragment());
+  var onLoadSuccessHandler = function (wizardsdata) {
+    var wizardsArray = [];
+    for (var i = 0; i < WIZARDS_AMOUNT; i++) {
+      wizardsArray[i] = {
+        name: wizardsdata[i].name,
+        coatColor: wizardsdata[i].colorCoat,
+        eyesColor: wizardsdata[i].colorEyes
+      };
+    }
+    window.wizards = wizardsArray;
+    simiralWizardList.appendChild(getFragment());
+  };
+
+  window.load(onLoadSuccessHandler, window.errorHandler);
 
   // меняет цвет мантии персонажа на random
 
