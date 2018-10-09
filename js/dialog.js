@@ -73,7 +73,7 @@
   //
 
   setupForm.addEventListener('submit', function (evt) {
-    window.save(new FormData(setupForm), function () {
+    window.backend.save(new FormData(setupForm), function () {
       window.setup.classList.add('.hidden');
       evt.preventDefault();
     });

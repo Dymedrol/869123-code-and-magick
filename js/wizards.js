@@ -56,7 +56,7 @@
     simiralWizardList.appendChild(getFragment());
   };
 
-  window.load(onLoadSuccessHandler, window.errorHandler);
+  window.backend.load(onLoadSuccessHandler, window.errorHandler);
 
   // меняет цвет мантии персонажа на random
 
